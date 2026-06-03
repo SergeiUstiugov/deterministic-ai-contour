@@ -1,5 +1,7 @@
 # Двухконтурный маршрутизатор — рабочий прототип
 
+[![CI](https://github.com/SergeiUstiugov/deterministic-ai-contour/actions/workflows/ci.yml/badge.svg)](https://github.com/SergeiUstiugov/deterministic-ai-contour/actions/workflows/ci.yml)
+
 Маленький, полностью локальный прототип к статье **«Новая индустриализация по-новому»**
 и её приложениям. Показывает на коде то, о чём статья говорит словами: один контур
 **предлагает**, второй — **проверяет**, и до оборудования доходит только проверенное.
