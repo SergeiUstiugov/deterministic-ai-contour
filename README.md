@@ -69,6 +69,22 @@ python -m calibration.conformal
 `python benchmark.py` — получите долю задач, закрываемых детерминированно, именно для
 вашего домена. Новые правила добавляются функциями в `checker/rules.py`.
 
+## Приложения
+
+Теоретические материалы к статье (открываются после скачивания):
+
+- [Приложение A. Теория двухконтурной архитектуры](docs/Приложение_A_Теория_двухконтурной_архитектуры.docx)
+- [Приложение B. Industrial AI OS (Siemens × NVIDIA)](docs/Приложение_B_Industrial_AI_OS_Siemens_NVIDIA.docx)
+
+## Тесты и автопроверка
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+При каждом пуше запускается автопроверка (GitHub Actions, файл `.github/workflows/ci.yml`):
+прогоняются тесты и бенчмарк на Python 3.10–3.12.
+
 ## Лицензия
 
 MIT — см. `LICENSE`.
