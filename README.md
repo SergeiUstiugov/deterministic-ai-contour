@@ -73,10 +73,10 @@ python -m calibration.conformal
 
 ## Приложения
 
-Теоретические материалы к статье (открываются после скачивания):
+Теоретические материалы к статье:
 
-- Приложение A. Теория двухконтурной архитектуры — [PDF (просмотр)](docs/appendix_a_theory.pdf) · [DOCX](docs/Приложение_A_Теория_двухконтурной_архитектуры.docx)
-- Приложение B. Industrial AI OS (Siemens × NVIDIA) — [PDF (просмотр)](docs/appendix_b_siemens_nvidia.pdf) · [DOCX](docs/Приложение_B_Industrial_AI_OS_Siemens_NVIDIA.docx)
+- Приложение A. Теория двухконтурной архитектуры — [PDF (открыть)](https://raw.githubusercontent.com/SergeiUstiugov/deterministic-ai-contour/main/docs/appendix_a_theory.pdf) · [DOCX](docs/Приложение_A_Теория_двухконтурной_архитектуры.docx)
+- Приложение B. Industrial AI OS (Siemens × NVIDIA) — [PDF (открыть)](https://raw.githubusercontent.com/SergeiUstiugov/deterministic-ai-contour/main/docs/appendix_b_siemens_nvidia.pdf) · [DOCX](docs/Приложение_B_Industrial_AI_OS_Siemens_NVIDIA.docx)
 
 ## Тесты и автопроверка
 
