@@ -1,14 +1,49 @@
 # Двухконтурный маршрутизатор — рабочий прототип
 
-[![CI](https://github.com/SergeiUstiugov/deterministic-ai-contour/actions/workflows/ci.yml/badge.svg)](https://github.com/SergeiUstiugov/deterministic-ai-contour/actions/workflows/ci.yml)
-
 Маленький, полностью локальный прототип к статье **«Новая индустриализация по-новому»**
 и её приложениям. Показывает на коде то, о чём статья говорит словами: один контур
 **предлагает**, второй — **проверяет**, и до оборудования доходит только проверенное.
 
+![Двухконтурная архитектура: потоки данных](docs/Схема_двухконтурной_архитектуры.png)
+
 Это **демонстрационный каркас, а не промышленный продукт.** Полевых метрик здесь нет.
 Возьмите 5–10 задач своего цеха, подставьте их — и получите свою таблицу
 «детерминированно / нужен ИИ».
+
+## Как это выглядит на коде
+
+«Плохой» черновик, какой мог бы выдать ИИ, — программа-сторож его **блокирует**:
+
+```iecst
+PROGRAM PumpControl
+VAR
+    u : REAL;        (* состояние без инициализации *)
+END_VAR
+    u := u + 1.0 * e;   (* интеграл без ограничения, нет anti-windup *)
+    IF u > 100.0 THEN   (* магическое число, только верхний предел *)
+        Output := 100.0;
+    END_IF;
+    ESD_Valve := TRUE;  (* прямая запись в защищённый тег *)
+END_PROGRAM
+```
+
+```text
+$ python -m checker.engine examples/bad_pump.st
+[BLOCK] examples/bad_pump.st
+   BLOCK R-INIT: переменная 'u' используется до инициализации
+   BLOCK R-ANTI-WINDUP: интегратор 'u' растёт без ограничения
+   BLOCK R-SAFEWRITE: прямая запись в защищённый тег 'ESD_Valve' запрещена
+   WARN  R-LIMIT / R-MAGIC / R-ESTOP ...
+```
+
+Исправленный вариант (инициализация, зажим интегратора, оба предела, обработка
+аварийного сигнала) проходит проверку:
+
+```text
+$ python -m checker.engine examples/good_pump.st
+[OK] examples/good_pump.st
+   нарушений не найдено
+```
 
 ## Что внутри (и как это связано со статьёй)
 
@@ -73,10 +108,10 @@ python -m calibration.conformal
 
 ## Приложения
 
-Теоретические материалы к статье:
+Теоретические материалы к статье (открываются после скачивания):
 
-- Приложение A. Теория двухконтурной архитектуры — [PDF (открыть)](https://raw.githubusercontent.com/SergeiUstiugov/deterministic-ai-contour/main/docs/appendix_a_theory.pdf) · [DOCX](docs/Приложение_A_Теория_двухконтурной_архитектуры.docx)
-- Приложение B. Industrial AI OS (Siemens × NVIDIA) — [PDF (открыть)](https://raw.githubusercontent.com/SergeiUstiugov/deterministic-ai-contour/main/docs/appendix_b_siemens_nvidia.pdf) · [DOCX](docs/Приложение_B_Industrial_AI_OS_Siemens_NVIDIA.docx)
+- Приложение A. Теория двухконтурной архитектуры — [PDF (просмотр)](docs/Приложение_A_Теория_двухконтурной_архитектуры.pdf) · [DOCX](docs/Приложение_A_Теория_двухконтурной_архитектуры.docx)
+- Приложение B. Industrial AI OS (Siemens × NVIDIA) — [PDF (просмотр)](docs/Приложение_B_Industrial_AI_OS_Siemens_NVIDIA.pdf) · [DOCX](docs/Приложение_B_Industrial_AI_OS_Siemens_NVIDIA.docx)
 
 ## Тесты и автопроверка
 
@@ -84,8 +119,21 @@ python -m calibration.conformal
 python -m unittest discover -s tests -v
 ```
 
+- `tests/test_checker.py` — сквозные тесты (плохой код → BLOCK, хороший → OK, запрет по умолчанию, маршрутизатор, conformal).
+- `tests/test_rules.py` — **golden-тесты самих правил** (концепт класса B3): для каждого правила есть эталонный код, где оно должно и где не должно срабатывать. Если правило изменили — тест это поймает.
+
 При каждом пуше запускается автопроверка (GitHub Actions, файл `.github/workflows/ci.yml`):
 прогоняются тесты и бенчмарк на Python 3.10–3.12.
+
+## Запуск в Docker
+
+Если не хотите ставить Python локально:
+
+```bash
+docker build -t two-loop-router .
+docker run --rm two-loop-router            # прогон тестов + бенчмарк
+docker run --rm two-loop-router python -m checker.engine examples/bad_pump.st
+```
 
 ## Лицензия
 
