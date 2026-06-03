@@ -1,0 +1,15 @@
+{
+  "_comment": "Замените этот файл своими 10 задачами своего цеха и пересчитайте таблицу. kind: hard|soft; has_cheap_oracle: есть ли дешёвая надёжная проверка; rule_may_be_stale: правило может устареть; code: путь к .st для прогона через программу-сторож.",
+  "tasks": [
+    {"name": "Проверка программы насоса (черновик ИИ)", "kind": "hard", "has_cheap_oracle": true, "code": "examples/bad_pump.st"},
+    {"name": "Проверка программы насоса (исправленная)", "kind": "hard", "has_cheap_oracle": true, "code": "examples/good_pump.st"},
+    {"name": "Лимиты давления и температуры", "kind": "hard", "has_cheap_oracle": true},
+    {"name": "Запрет записи в защитные теги", "kind": "hard", "has_cheap_oracle": true},
+    {"name": "Соответствие регламента версии стандарта", "kind": "hard", "has_cheap_oracle": true, "rule_may_be_stale": true},
+    {"name": "Сложный инвариант между узлами", "kind": "hard", "has_cheap_oracle": false},
+    {"name": "Приоритизация второстепенных алярмов", "kind": "soft"},
+    {"name": "Снижение энергопотребления линии", "kind": "soft"},
+    {"name": "График обслуживания оборудования", "kind": "soft"},
+    {"name": "Подбор настроек регулятора по качеству", "kind": "soft"}
+  ]
+}
